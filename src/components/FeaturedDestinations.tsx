@@ -3,7 +3,20 @@ import { ChevronRight } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 
-const destinations = {
+interface Destination {
+  id: number;
+  title: string;
+  image: string;
+  price: string;
+  rating: number;
+}
+
+const destinations: {
+  bestSellers: Destination[];
+  recommended: Destination[];
+  visaFree: Destination[];
+  honeymoon: Destination[];
+} = {
   bestSellers: [
     {
       id: 1,
@@ -107,11 +120,11 @@ const destinations = {
 
 const DestinationSection = ({ 
   title, 
-  destinations, 
+  destinations,
   viewAllLink 
 }: { 
   title: string;
-  destinations: typeof destinations.bestSellers;
+  destinations: Destination[];
   viewAllLink: string;
 }) => {
   return (
