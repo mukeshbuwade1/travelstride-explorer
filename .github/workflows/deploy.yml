@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change to the branch you want to deploy from
+      - main  # Change this if you're using a different branch for deployment
 
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
         run: pnpm run build
 
       - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v2  # ✅ Fixed: Using the latest version
         with:
           path: dist
 
