@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +8,9 @@ interface ForgotPasswordFormProps {
   onBackToLogin: () => void;
 }
 
-export const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) => {
+export const ForgotPasswordForm = ({
+  onBackToLogin,
+}: ForgotPasswordFormProps) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -27,10 +28,10 @@ export const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) =
         description: "We've sent you a password reset link.",
       });
       onBackToLogin();
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message,
+        description: (error as { message: React.ReactNode }).message,
         variant: "destructive",
       });
     } finally {
@@ -56,11 +57,7 @@ export const ForgotPasswordForm = ({ onBackToLogin }: ForgotPasswordFormProps) =
             required
           />
         </div>
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={loading}
-        >
+        <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Sending..." : "Send reset link"}
         </Button>
       </form>
