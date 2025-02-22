@@ -37,10 +37,10 @@ export const SignupForm = ({ onLoginClick }: SignupFormProps) => {
         title: "Welcome!",
         description: "Please check your email to verify your account.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message,
+        description: (error as { message: React.ReactNode }).message,
         variant: "destructive",
       });
     } finally {
