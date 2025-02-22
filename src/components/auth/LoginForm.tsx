@@ -32,10 +32,10 @@ export const LoginForm = ({ onForgotPassword, onSignupClick }: LoginFormProps) =
         title: "Welcome back!",
         description: "You have successfully logged in.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message,
+        description: (error as { message: React.ReactNode }).message,
         variant: "destructive",
       });
     } finally {
@@ -49,10 +49,10 @@ export const LoginForm = ({ onForgotPassword, onSignupClick }: LoginFormProps) =
         provider: "google",
       });
       if (error) throw error;
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message,
+        description: (error as { message: React.ReactNode }).message,
         variant: "destructive",
       });
     }
@@ -64,10 +64,10 @@ export const LoginForm = ({ onForgotPassword, onSignupClick }: LoginFormProps) =
         provider: "facebook",
       });
       if (error) throw error;
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message,
+        description: (error as { message: React.ReactNode }).message,
         variant: "destructive",
       });
     }
