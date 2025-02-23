@@ -23,15 +23,12 @@ export const Navbar = () => {
             <Link to="/packages" className="text-gray-700 hover:text-primary transition-colors">
               Packages
             </Link>
-            <a href="#offers" className="text-gray-700 hover:text-primary transition-colors">
-              Offers
-            </a>
-            <a href="#blog" className="text-gray-700 hover:text-primary transition-colors">
+            <Link to="/blog" className="text-gray-700 hover:text-primary transition-colors">
               Blog
-            </a>
-            <a href="#contact" className="text-gray-700 hover:text-primary transition-colors">
+            </Link>
+            <Link to="/contact" className="text-gray-700 hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
             <Button variant="outline" className="ml-4">
               Sign In
             </Button>
@@ -65,24 +62,18 @@ export const Navbar = () => {
               >
                 Packages
               </Link>
-              <a
-                href="#offers"
-                className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"
-              >
-                Offers
-              </a>
-              <a
-                href="#blog"
+              <Link
+                to="/blog"
                 className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"
               >
                 Blog
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                to="/contact"
                 className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"
               >
                 Contact
-              </a>
+              </Link>
               <div className="space-y-2 pt-2">
                 <Button variant="outline" className="w-full">
                   Sign In
