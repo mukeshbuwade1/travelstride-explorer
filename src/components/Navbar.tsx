@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,17 +12,17 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center">
-            <span className="text-2xl font-bold text-primary">TravelEase</span>
+            <Link to="/" className="text-2xl font-bold text-primary">TravelEase</Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-gray-700 hover:text-primary transition-colors">
+            <Link to="/" className="text-gray-700 hover:text-primary transition-colors">
               Home
-            </a>
-            <a href="#packages" className="text-gray-700 hover:text-primary transition-colors">
+            </Link>
+            <Link to="/packages" className="text-gray-700 hover:text-primary transition-colors">
               Packages
-            </a>
+            </Link>
             <a href="#offers" className="text-gray-700 hover:text-primary transition-colors">
               Offers
             </a>
@@ -52,18 +53,18 @@ export const Navbar = () => {
         {isOpen && (
           <div className="md:hidden animate-fade-down">
             <div className="pt-2 pb-3 space-y-1">
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"
               >
                 Home
-              </a>
-              <a
-                href="#packages"
+              </Link>
+              <Link
+                to="/packages"
                 className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"
               >
                 Packages
-              </a>
+              </Link>
               <a
                 href="#offers"
                 className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"

@@ -1,7 +1,7 @@
-
 import { ChevronRight } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface Destination {
   id: number;
@@ -121,17 +121,25 @@ const destinations: {
 const DestinationSection = ({ 
   title, 
   destinations,
-  viewAllLink 
+  viewAllLink,
+  tag 
 }: { 
   title: string;
   destinations: Destination[];
   viewAllLink: string;
+  tag?: string;
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="mb-12">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
-        <Button variant="ghost" className="text-primary" onClick={() => window.location.href = viewAllLink}>
+        <Button 
+          variant="ghost" 
+          className="text-primary" 
+          onClick={() => navigate(`/packages${tag ? `?tag=${tag}` : ''}`)}
+        >
           View All <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
@@ -179,22 +187,25 @@ export const FeaturedDestinations = () => {
         <DestinationSection
           title="Best Sellers"
           destinations={destinations.bestSellers}
-          viewAllLink="/best-sellers"
+          viewAllLink="/packages"
+          tag="best-seller"
         />
         <DestinationSection
           title="Recommended For You"
           destinations={destinations.recommended}
-          viewAllLink="/recommended"
+          viewAllLink="/packages"
         />
         <DestinationSection
           title="Visa-Free Destinations"
           destinations={destinations.visaFree}
-          viewAllLink="/visa-free"
+          viewAllLink="/packages"
+          tag="visa-free"
         />
         <DestinationSection
           title="Honeymoon Packages"
           destinations={destinations.honeymoon}
-          viewAllLink="/honeymoon"
+          viewAllLink="/packages"
+          tag="honeymoon"
         />
       </div>
     </section>
