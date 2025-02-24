@@ -10,6 +10,7 @@ import Packages from "./pages/Packages";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import DestinationDetails from "./pages/DestinationDetails";
 import React from "react";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/packages" element={<Packages />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/destination/:id" element={<DestinationDetails />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

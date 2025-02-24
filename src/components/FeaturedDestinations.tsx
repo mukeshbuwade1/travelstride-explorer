@@ -148,7 +148,8 @@ const DestinationSection = ({
           {destinations.map((destination) => (
             <Card
               key={destination.id}
-              className="group flex-shrink-0 w-[300px] overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              className="group flex-shrink-0 w-[300px] overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              onClick={() => navigate(`/destination/${destination.id}`)}
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
@@ -160,7 +161,7 @@ const DestinationSection = ({
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">{destination.title}</h3>
                 <div className="flex justify-between items-center">
-                  <span className="text-primary text-lg font-bold">{destination.price}</span>
+                  <span className="text-primary text-lg font-bold">₹{destination.price}</span>
                   <div className="flex items-center">
                     <span className="text-yellow-400">★</span>
                     <span className="ml-1 text-gray-600">{destination.rating}</span>
