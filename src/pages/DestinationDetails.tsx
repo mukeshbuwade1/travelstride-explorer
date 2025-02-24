@@ -1,10 +1,10 @@
-
 import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Filter, Search, MapPin, Users, Hotel, Utensils, Plane, Car, Activity } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Package {
   id: number;
@@ -186,6 +186,7 @@ const destinations = {
 
 const DestinationDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const destination = destinations[id as keyof typeof destinations];
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
@@ -202,7 +203,6 @@ const DestinationDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
-      {/* Hero Section */}
       <div 
         className="relative h-[40vh] bg-cover bg-center"
         style={{ 
@@ -218,7 +218,6 @@ const DestinationDetails = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Filters */}
         <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
@@ -250,10 +249,13 @@ const DestinationDetails = () => {
           </div>
         </div>
 
-        {/* Packages Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPackages.map((pkg) => (
-            <Card key={pkg.id} className="overflow-hidden">
+            <Card 
+              key={pkg.id} 
+              className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300"
+              onClick={() => navigate(`/package/${pkg.id}`)}
+            >
               <div className="relative aspect-video">
                 <img
                   src={pkg.image}
