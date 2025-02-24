@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { useAuth } from "@/hooks/useAuth";
+import { BestDealForm } from "@/components/forms/BestDealForm";
 
 const packageData = {
   "1": {
@@ -270,6 +271,7 @@ const PackageDetails = () => {
   const { id } = useParams();
   const packageInfo = packageData[id as keyof typeof packageData];
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showDealForm, setShowDealForm] = useState(false);
   const { session } = useAuth();
   const { toast } = useToast();
 
@@ -291,10 +293,15 @@ const PackageDetails = () => {
       setShowAuthModal(true);
       return;
     }
+    setShowDealForm(true);
+  };
+
+  const handleDealFormSubmit = (formData: any) => {
     toast({
       title: "Request Received",
       description: "We'll send you our best offer for this package soon!",
     });
+    console.log("Form submitted:", formData);
   };
 
   return (
@@ -423,6 +430,13 @@ const PackageDetails = () => {
           </div>
         </div>
       </div>
+      <BestDealForm 
+        isOpen={showDealForm}
+        onOpenChange={setShowDealForm}
+        packageTitle={packageInfo.title}
+        destination="Maldives"
+        onSubmit={handleDealFormSubmit}
+      />
       <AuthModal 
         isOpen={showAuthModal} 
         onOpenChange={setShowAuthModal}
