@@ -23,7 +23,7 @@ interface Package {
 }
 
 const destinations = {
-  "bali": {
+  "1": {
     title: "Bali, Indonesia",
     subtitle: "Where Paradise Meets Adventure",
     packages: [
@@ -42,18 +42,134 @@ const destinations = {
           activities: true
         }
       },
-      // ... Add more packages
+      {
+        id: 2,
+        name: "Luxury Bali Escape",
+        image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4",
+        duration: "7 Days 6 Nights",
+        hotel: "5 Star",
+        price: 75000,
+        services: {
+          flight: true,
+          hotel: "5 Star",
+          transfer: true,
+          meals: true,
+          activities: true
+        }
+      },
+      {
+        id: 3,
+        name: "Bali Budget Explorer",
+        image: "https://images.unsplash.com/photo-1542897644-e04428948020",
+        duration: "4 Days 3 Nights",
+        hotel: "3 Star",
+        price: 35000,
+        services: {
+          flight: true,
+          hotel: "3 Star",
+          transfer: true,
+          meals: false,
+          activities: true
+        }
+      }
     ]
   },
-  "swiss-alps": {
+  "2": {
     title: "Swiss Alps",
     subtitle: "Experience Winter Wonderland",
     packages: [
       {
-        id: 2,
+        id: 4,
         name: "Alpine Adventure",
         image: "https://images.unsplash.com/photo-1472396961693-142e6e269027",
         duration: "6 Days 5 Nights",
+        hotel: "5 Star",
+        price: 120000,
+        services: {
+          flight: true,
+          hotel: "5 Star",
+          transfer: true,
+          meals: true,
+          activities: true
+        }
+      },
+      {
+        id: 5,
+        name: "Swiss Ski Special",
+        image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4",
+        duration: "5 Days 4 Nights",
+        hotel: "4 Star",
+        price: 95000,
+        services: {
+          flight: true,
+          hotel: "4 Star",
+          transfer: true,
+          meals: true,
+          activities: true
+        }
+      }
+    ]
+  },
+  "3": {
+    title: "Santorini, Greece",
+    subtitle: "A Paradise of White and Blue",
+    packages: [
+      {
+        id: 6,
+        name: "Romantic Santorini",
+        image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716",
+        duration: "6 Days 5 Nights",
+        hotel: "5 Star",
+        price: 89000,
+        services: {
+          flight: true,
+          hotel: "5 Star",
+          transfer: true,
+          meals: true,
+          activities: true
+        }
+      },
+      {
+        id: 7,
+        name: "Santorini Explorer",
+        image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff",
+        duration: "5 Days 4 Nights",
+        hotel: "4 Star",
+        price: 75000,
+        services: {
+          flight: true,
+          hotel: "4 Star",
+          transfer: true,
+          meals: false,
+          activities: true
+        }
+      }
+    ]
+  },
+  "4": {
+    title: "Maldives",
+    subtitle: "Paradise on Earth",
+    packages: [
+      {
+        id: 8,
+        name: "Luxury Maldives",
+        image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8",
+        duration: "7 Days 6 Nights",
+        hotel: "5 Star",
+        price: 150000,
+        services: {
+          flight: true,
+          hotel: "5 Star",
+          transfer: true,
+          meals: true,
+          activities: true
+        }
+      },
+      {
+        id: 9,
+        name: "Maldives Honeymoon",
+        image: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd",
+        duration: "5 Days 4 Nights",
         hotel: "5 Star",
         price: 120000,
         services: {
