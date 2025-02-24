@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -82,8 +81,189 @@ const packageData = {
         ]
       }
     ]
+  },
+  "4": {
+    title: "Luxury Maldives Getaway",
+    subtitle: "7 Days of Paradise in the Indian Ocean",
+    price: 150000,
+    description: "Indulge in the ultimate luxury experience in the Maldives. Stay in overwater villas, enjoy world-class cuisine, and explore the vibrant marine life of the Indian Ocean. Perfect for honeymoons and special occasions.",
+    images: [
+      "https://images.unsplash.com/photo-1514282401047-d79a71a590e8",
+      "https://images.unsplash.com/photo-1573843981267-be1999ff37cd",
+      "https://images.unsplash.com/photo-1578922746465-3a80a228f223"
+    ],
+    duration: "7 Days 6 Nights",
+    services: {
+      flight: true,
+      hotel: "5 Star",
+      transfer: true,
+      meals: true,
+      activities: true
+    },
+    itinerary: [
+      {
+        day: 1,
+        title: "Welcome to Paradise",
+        activities: [
+          "VIP arrival at Male International Airport",
+          "Luxury speedboat transfer to resort",
+          "Welcome drinks and resort orientation",
+          "Sunset dinner at overwater restaurant"
+        ]
+      },
+      {
+        day: 2,
+        title: "Ocean Adventure",
+        activities: [
+          "Gourmet breakfast in villa",
+          "Guided snorkeling tour",
+          "Traditional Maldivian cooking class",
+          "Private beach dinner under the stars"
+        ]
+      },
+      {
+        day: 3,
+        title: "Spa & Relaxation",
+        activities: [
+          "Breakfast at main restaurant",
+          "Couple's spa treatment",
+          "Afternoon tea service",
+          "Sunset dolphin watching cruise"
+        ]
+      },
+      {
+        day: 4,
+        title: "Island Exploration",
+        activities: [
+          "Breakfast at villa",
+          "Local island tour",
+          "Water sports activities",
+          "BBQ dinner on private beach"
+        ]
+      },
+      {
+        day: 5,
+        title: "Ocean Discovery",
+        activities: [
+          "Breakfast at main restaurant",
+          "Scuba diving or submarine tour",
+          "Luxury yacht sunset cruise",
+          "Fine dining experience"
+        ]
+      },
+      {
+        day: 6,
+        title: "Leisure Day",
+        activities: [
+          "Floating breakfast in villa pool",
+          "Optional water sports activities",
+          "Photography session",
+          "Farewell gala dinner"
+        ]
+      },
+      {
+        day: 7,
+        title: "Departure",
+        activities: [
+          "Final breakfast in villa",
+          "Resort photoshoot session",
+          "Luxury transfer to airport",
+          "Departure assistance"
+        ]
+      }
+    ]
+  },
+  "8": {
+    title: "Luxury Maldives",
+    subtitle: "Experience Ultimate Luxury in Paradise",
+    price: 180000,
+    description: "Discover the epitome of luxury in our exclusive Maldives resort. This package offers the perfect blend of relaxation and adventure, featuring overwater villas, gourmet dining, and exclusive experiences.",
+    images: [
+      "https://images.unsplash.com/photo-1578922746465-3a80a228f223",
+      "https://images.unsplash.com/photo-1514282401047-d79a71a590e8",
+      "https://images.unsplash.com/photo-1573843981267-be1999ff37cd"
+    ],
+    duration: "7 Days 6 Nights",
+    services: {
+      flight: true,
+      hotel: "5 Star",
+      transfer: true,
+      meals: true,
+      activities: true
+    },
+    itinerary: [
+      {
+        day: 1,
+        title: "Arrival in Paradise",
+        activities: [
+          "VIP airport welcome",
+          "Seaplane transfer to resort",
+          "Villa check-in with champagne",
+          "Welcome dinner at signature restaurant"
+        ]
+      },
+      {
+        day: 2,
+        title: "Marine Life Discovery",
+        activities: [
+          "Breakfast in villa",
+          "Private marine biologist tour",
+          "Coral adoption program",
+          "Underwater restaurant dinner"
+        ]
+      },
+      {
+        day: 3,
+        title: "Wellness Journey",
+        activities: [
+          "Sunrise yoga session",
+          "Spa treatments",
+          "Mindfulness workshop",
+          "Healthy cooking class"
+        ]
+      },
+      {
+        day: 4,
+        title: "Ocean Adventure",
+        activities: [
+          "Luxury yacht excursion",
+          "Private snorkeling session",
+          "Jet ski safari",
+          "Sunset fishing trip"
+        ]
+      },
+      {
+        day: 5,
+        title: "Cultural Experience",
+        activities: [
+          "Local island visit",
+          "Traditional craft workshop",
+          "Maldivian cooking class",
+          "Cultural performance dinner"
+        ]
+      },
+      {
+        day: 6,
+        title: "Romance & Relaxation",
+        activities: [
+          "Couple's massage",
+          "Private beach picnic",
+          "Sunset cocktail cruise",
+          "Private beach dinner"
+        ]
+      },
+      {
+        day: 7,
+        title: "Farewell",
+        activities: [
+          "Champagne breakfast",
+          "Last-minute shopping",
+          "Photo session",
+          "VIP departure transfer"
+        ]
+      }
+    ]
   }
-  // Add more packages as needed
 };
 
 const PackageDetails = () => {
@@ -121,12 +301,10 @@ const PackageDetails = () => {
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{packageInfo.title}</h1>
             <p className="text-lg text-gray-600 mb-6">{packageInfo.subtitle}</p>
 
-            {/* Image Carousel */}
             <Card className="mb-8">
               <Carousel className="w-full">
                 <CarouselContent>
@@ -147,13 +325,11 @@ const PackageDetails = () => {
               </Carousel>
             </Card>
 
-            {/* Description */}
             <Card className="p-6 mb-8">
               <h2 className="text-xl font-semibold mb-4">Overview</h2>
               <p className="text-gray-600">{packageInfo.description}</p>
             </Card>
 
-            {/* Services */}
             <Card className="p-6 mb-8">
               <h2 className="text-xl font-semibold mb-4">Included Services</h2>
               <div className="flex flex-wrap gap-2">
@@ -185,7 +361,6 @@ const PackageDetails = () => {
               </div>
             </Card>
 
-            {/* Itinerary */}
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">Day-wise Itinerary</h2>
               <Accordion type="single" collapsible className="w-full">
@@ -210,7 +385,6 @@ const PackageDetails = () => {
             </Card>
           </div>
 
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <Card className="p-6 sticky top-24">
               <div className="space-y-6">
