@@ -10,6 +10,7 @@ import { useState } from "react";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { useAuth } from "@/hooks/useAuth";
 import { BestDealForm } from "@/components/forms/BestDealForm";
+import { BookingForm } from "@/components/forms/BookingForm";
 
 const packageData = {
   "1": {
@@ -272,6 +273,7 @@ const PackageDetails = () => {
   const packageInfo = packageData[id as keyof typeof packageData];
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDealForm, setShowDealForm] = useState(false);
+  const [showBookingForm, setShowBookingForm] = useState(false);
   const { session } = useAuth();
   const { toast } = useToast();
 
@@ -282,10 +284,7 @@ const PackageDetails = () => {
       setShowAuthModal(true);
       return;
     }
-    toast({
-      title: "Booking Initiated",
-      description: "Our team will contact you shortly to confirm your booking.",
-    });
+    setShowBookingForm(true);
   };
 
   const handleGetBestDeal = () => {
@@ -440,6 +439,16 @@ const PackageDetails = () => {
       <AuthModal 
         isOpen={showAuthModal} 
         onOpenChange={setShowAuthModal}
+      />
+      <BookingForm 
+        isOpen={showBookingForm}
+        onOpenChange={setShowBookingForm}
+        packageDetails={{
+          id: parseInt(id!, 10),
+          name: packageInfo.title,
+          duration: packageInfo.duration,
+          price: packageInfo.price
+        }}
       />
     </div>
   );
