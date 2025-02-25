@@ -9,6 +9,69 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      destinations: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: number
+          image: string
+          price: number
+          rating: number
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: number
+          image: string
+          price: number
+          rating: number
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: number
+          image?: string
+          price?: number
+          rating?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      exclusive_offers: {
+        Row: {
+          code: string
+          created_at: string
+          description: string
+          discount: string
+          id: number
+          image: string
+          title: string
+          valid_until: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description: string
+          discount: string
+          id?: number
+          image: string
+          title: string
+          valid_until: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string
+          discount?: string
+          id?: number
+          image?: string
+          title?: string
+          valid_until?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -27,6 +90,39 @@ export type Database = {
           full_name?: string | null
           id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      promotions: {
+        Row: {
+          created_at: string
+          description: string
+          discount: string
+          id: number
+          image: string
+          partner: string
+          price: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          discount: string
+          id?: number
+          image: string
+          partner: string
+          price: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          discount?: string
+          id?: number
+          image?: string
+          partner?: string
+          price?: number
+          title?: string
         }
         Relationships: []
       }

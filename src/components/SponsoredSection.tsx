@@ -1,39 +1,61 @@
 
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "./ui/skeleton";
 
-// This would typically come from an API
-const sponsoredContent = [
-  {
-    id: 1,
-    title: "Dubai Summer Package",
-    description: "5 nights, luxury hotel stay with desert safari",
-    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
-    partner: "Emirates Tours",
-    price: "$999",
-    discount: "20% OFF",
-  },
-  {
-    id: 2,
-    title: "Maldives Special",
-    description: "7 days in paradise with water villa stay",
-    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8",
-    partner: "Island Escapes",
-    price: "$1,499",
-    discount: "15% OFF",
-  },
-  {
-    id: 3,
-    title: "Thailand Adventure",
-    description: "10 days exploring Bangkok & Phuket",
-    image: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a",
-    partner: "Asian Ventures",
-    price: "$899",
-    discount: "25% OFF",
-  },
-];
+interface Promotion {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  partner: string;
+  price: number;
+  discount: string;
+}
 
 export const SponsoredSection = () => {
+  const { data: promotions, isLoading } = useQuery({
+    queryKey: ['promotions'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('promotions')
+        .select('*');
+      
+      if (error) throw error;
+      return data as Promotion[];
+    }
+  });
+
+  if (isLoading) {
+    return (
+      <section className="py-12 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-6 w-24" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <Skeleton className="h-48 w-full" />
+                <div className="p-5">
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-full mb-4" />
+                  <div className="flex justify-between">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-32" />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-12 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,7 +67,7 @@ export const SponsoredSection = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sponsoredContent.map((item) => (
+          {promotions?.map((item) => (
             <Card
               key={item.id}
               className="group overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-up"
@@ -69,7 +91,7 @@ export const SponsoredSection = () => {
                   <p className="text-sm text-gray-600">{item.description}</p>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-primary font-bold">{item.price}</span>
+                  <span className="text-primary font-bold">${item.price}</span>
                   <span className="text-sm text-gray-500">by {item.partner}</span>
                 </div>
               </div>

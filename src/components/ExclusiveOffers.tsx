@@ -2,38 +2,61 @@
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Timer, Tag } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "./ui/skeleton";
 
-const offers = [
-  {
-    id: 1,
-    title: "Early Bird Summer Special",
-    description: "Book your summer vacation now and save big with our early bird discounts",
-    discount: "25% OFF",
-    validUntil: "2024-05-30",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    code: "SUMMER25",
-  },
-  {
-    id: 2,
-    title: "Last Minute Deals",
-    description: "Spontaneous traveler? Get amazing discounts on last-minute bookings",
-    discount: "40% OFF",
-    validUntil: "2024-04-15",
-    image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
-    code: "LASTCALL40",
-  },
-  {
-    id: 3,
-    title: "Family Package Special",
-    description: "Special rates for family bookings with kids under 12 stay free",
-    discount: "30% OFF",
-    validUntil: "2024-06-30",
-    image: "https://images.unsplash.com/photo-1545153996-9419dd2acf66",
-    code: "FAMILY30",
-  },
-];
+interface ExclusiveOffer {
+  id: number;
+  title: string;
+  description: string;
+  discount: string;
+  valid_until: string;
+  image: string;
+  code: string;
+}
 
 export const ExclusiveOffers = () => {
+  const { data: offers, isLoading } = useQuery({
+    queryKey: ['exclusive-offers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('exclusive_offers')
+        .select('*');
+      
+      if (error) throw error;
+      return data as ExclusiveOffer[];
+    }
+  });
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <Skeleton className="h-8 w-64 mx-auto mb-4" />
+            <Skeleton className="h-6 w-96 mx-auto" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <Skeleton className="h-48 w-full" />
+                <div className="p-6">
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-full mb-4" />
+                  <div className="flex justify-between">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,7 +66,7 @@ export const ExclusiveOffers = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {offers.map((offer) => (
+          {offers?.map((offer) => (
             <Card key={offer.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="relative">
                 <img
@@ -61,7 +84,7 @@ export const ExclusiveOffers = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-sm text-gray-500">
                     <Timer className="w-4 h-4 mr-1" />
-                    Valid until {new Date(offer.validUntil).toLocaleDateString()}
+                    Valid until {new Date(offer.valid_until).toLocaleDateString()}
                   </div>
                   <div className="flex items-center text-sm font-medium text-primary">
                     <Tag className="w-4 h-4 mr-1" />
