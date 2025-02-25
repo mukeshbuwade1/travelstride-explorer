@@ -1,11 +1,16 @@
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserRound } from "lucide-react";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { AuthModal } from "./auth/AuthModal";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { session } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-200">
@@ -29,10 +34,23 @@ export const Navbar = () => {
             <Link to="/contact" className="text-gray-700 hover:text-primary transition-colors">
               Contact
             </Link>
-            <Button variant="outline" className="ml-4">
-              Sign In
-            </Button>
-            <Button>Sign Up</Button>
+            {session ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="ml-4"
+                onClick={() => navigate('/profile')}
+              >
+                <UserRound className="h-5 w-5" />
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline" className="ml-4" onClick={() => setShowAuthModal(true)}>
+                  Sign In
+                </Button>
+                <Button onClick={() => setShowAuthModal(true)}>Sign Up</Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Navigation Button */}
@@ -74,16 +92,31 @@ export const Navbar = () => {
               >
                 Contact
               </Link>
-              <div className="space-y-2 pt-2">
-                <Button variant="outline" className="w-full">
-                  Sign In
-                </Button>
-                <Button className="w-full">Sign Up</Button>
-              </div>
+              {session ? (
+                <Link
+                  to="/profile"
+                  className="block px-3 py-2 text-gray-700 hover:text-primary transition-colors"
+                >
+                  My Profile
+                </Link>
+              ) : (
+                <div className="space-y-2 pt-2">
+                  <Button variant="outline" className="w-full" onClick={() => setShowAuthModal(true)}>
+                    Sign In
+                  </Button>
+                  <Button className="w-full" onClick={() => setShowAuthModal(true)}>
+                    Sign Up
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onOpenChange={setShowAuthModal}
+      />
     </nav>
   );
 };
