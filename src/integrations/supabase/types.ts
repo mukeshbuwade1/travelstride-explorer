@@ -15,6 +15,9 @@ export type Database = {
           created_at: string
           id: number
           package_id: number | null
+          payment_status: string | null
+          razorpay_order_id: string | null
+          razorpay_payment_id: string | null
           status: string
           total_amount: number
           user_id: string | null
@@ -24,6 +27,9 @@ export type Database = {
           created_at?: string
           id?: number
           package_id?: number | null
+          payment_status?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
           status?: string
           total_amount: number
           user_id?: string | null
@@ -33,6 +39,9 @@ export type Database = {
           created_at?: string
           id?: number
           package_id?: number | null
+          payment_status?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
           status?: string
           total_amount?: number
           user_id?: string | null
@@ -254,6 +263,53 @@ export type Database = {
             columns: ["destination_id"]
             isOneToOne: false
             referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_transactions: {
+        Row: {
+          amount: number
+          booking_id: number | null
+          created_at: string
+          id: number
+          payment_method: string | null
+          razorpay_order_id: string | null
+          razorpay_payment_id: string | null
+          status: string
+          transaction_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          booking_id?: number | null
+          created_at?: string
+          id?: number
+          payment_method?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
+          status?: string
+          transaction_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: number | null
+          created_at?: string
+          id?: number
+          payment_method?: string | null
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
+          status?: string
+          transaction_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_transactions_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
         ]
