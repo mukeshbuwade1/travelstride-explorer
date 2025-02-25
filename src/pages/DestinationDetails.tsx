@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,31 +34,35 @@ const DestinationDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
 
+  const destinationId = id ? parseInt(id, 10) : 0;
+
   const { data: destination, isLoading: isLoadingDestination } = useQuery({
-    queryKey: ['destination', id],
+    queryKey: ['destination', destinationId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('destinations')
         .select('*')
-        .eq('id', id)
+        .eq('id', destinationId)
         .single();
       
       if (error) throw error;
       return data as Destination;
-    }
+    },
+    enabled: destinationId > 0
   });
 
   const { data: packages, isLoading: isLoadingPackages } = useQuery({
-    queryKey: ['packages', id],
+    queryKey: ['packages', destinationId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('packages')
         .select('*')
-        .eq('destination_id', id);
+        .eq('destination_id', destinationId);
       
       if (error) throw error;
       return data as Package[];
-    }
+    },
+    enabled: destinationId > 0
   });
 
   const filteredPackages = packages?.filter(pkg => {
@@ -69,6 +72,8 @@ const DestinationDetails = () => {
       (!priceRange.max || pkg.price <= Number(priceRange.max));
     return matchesSearch && matchesPriceRange;
   });
+
+  if (!destinationId) return <div>Invalid destination ID</div>;
 
   if (isLoadingDestination || isLoadingPackages) {
     return (
