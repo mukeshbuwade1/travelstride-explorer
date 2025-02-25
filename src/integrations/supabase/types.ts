@@ -9,6 +9,101 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          booking_date: string
+          created_at: string
+          id: number
+          package_id: number | null
+          status: string
+          total_amount: number
+          user_id: string | null
+        }
+        Insert: {
+          booking_date?: string
+          created_at?: string
+          id?: number
+          package_id?: number | null
+          status?: string
+          total_amount: number
+          user_id?: string | null
+        }
+        Update: {
+          booking_date?: string
+          created_at?: string
+          id?: number
+          package_id?: number | null
+          status?: string
+          total_amount?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      callback_requests: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: number
+          phone: string
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: number
+          phone: string
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: number
+          phone?: string
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      company_info: {
+        Row: {
+          about_description: string
+          address: string
+          created_at: string
+          email: string
+          id: number
+          name: string
+          phone: string
+        }
+        Insert: {
+          about_description: string
+          address: string
+          created_at?: string
+          email: string
+          id?: number
+          name: string
+          phone: string
+        }
+        Update: {
+          about_description?: string
+          address?: string
+          created_at?: string
+          email?: string
+          id?: number
+          name?: string
+          phone?: string
+        }
+        Relationships: []
+      }
       destinations: {
         Row: {
           category: string | null
@@ -71,6 +166,97 @@ export type Database = {
           valid_until?: string
         }
         Relationships: []
+      }
+      package_itinerary: {
+        Row: {
+          activities: string[]
+          created_at: string
+          day: number
+          id: number
+          package_id: number | null
+          title: string
+        }
+        Insert: {
+          activities: string[]
+          created_at?: string
+          day: number
+          id?: number
+          package_id?: number | null
+          title: string
+        }
+        Update: {
+          activities?: string[]
+          created_at?: string
+          day?: number
+          id?: number
+          package_id?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_itinerary_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      packages: {
+        Row: {
+          activities: boolean | null
+          created_at: string
+          description: string
+          destination_id: number | null
+          duration: string
+          flight: boolean | null
+          hotel_class: string
+          id: number
+          image: string
+          meals: boolean | null
+          name: string
+          price: number
+          transfer: boolean | null
+        }
+        Insert: {
+          activities?: boolean | null
+          created_at?: string
+          description: string
+          destination_id?: number | null
+          duration: string
+          flight?: boolean | null
+          hotel_class: string
+          id?: number
+          image: string
+          meals?: boolean | null
+          name: string
+          price: number
+          transfer?: boolean | null
+        }
+        Update: {
+          activities?: boolean | null
+          created_at?: string
+          description?: string
+          destination_id?: number | null
+          duration?: string
+          flight?: boolean | null
+          hotel_class?: string
+          id?: number
+          image?: string
+          meals?: boolean | null
+          name?: string
+          price?: number
+          transfer?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "packages_destination_id_fkey"
+            columns: ["destination_id"]
+            isOneToOne: false
+            referencedRelation: "destinations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
