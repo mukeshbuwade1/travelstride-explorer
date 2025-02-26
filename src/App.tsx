@@ -10,6 +10,9 @@ import Packages from "./pages/Packages";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import FAQ from "./pages/FAQ";
+import Terms from "./pages/Terms";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import DestinationDetails from "./pages/DestinationDetails";
 import PackageDetails from "./pages/PackageDetails";
 import Profile from "./pages/Profile";
@@ -30,6 +33,9 @@ const App = () => (
               <Route path="/packages" element={<Packages />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/destination/:id" element={<DestinationDetails />} />
               <Route path="/package/:id" element={<PackageDetails />} />
               <Route path="/profile" element={<Profile />} />

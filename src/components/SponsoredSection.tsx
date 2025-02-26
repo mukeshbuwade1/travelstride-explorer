@@ -1,9 +1,9 @@
-
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "./ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
 interface Promotion {
   id: number;
@@ -16,6 +16,7 @@ interface Promotion {
 }
 
 export const SponsoredSection = () => {
+  const navigate = useNavigate();
   const { data: promotions, isLoading } = useQuery({
     queryKey: ['promotions'],
     queryFn: async () => {
@@ -27,6 +28,10 @@ export const SponsoredSection = () => {
       return data as Promotion[];
     }
   });
+
+  const handleCardClick = (packageId: number) => {
+    navigate(`/package/${packageId}`);
+  };
 
   if (isLoading) {
     return (
@@ -67,36 +72,43 @@ export const SponsoredSection = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {promotions?.map((item) => (
-            <Card
-              key={item.id}
-              className="group overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-up"
-              style={{ animationDelay: `${item.id * 0.1}s` }}
-            >
-              <div className="relative">
-                <div className="aspect-video overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
+          {isLoading ? (
+            <div className="flex items-center justify-center h-48">
+              <Skeleton className="h-8 w-48" />
+            </div>
+          ) : (
+            promotions?.map((item) => (
+              <Card
+                key={item.id}
+                className="group overflow-hidden hover:shadow-lg transition-all duration-300 animate-fade-up cursor-pointer"
+                style={{ animationDelay: `${item.id * 0.1}s` }}
+                onClick={() => handleCardClick(item.id)}
+              >
+                <div className="relative">
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <Badge className="absolute top-4 right-4 bg-accent text-white">
+                    {item.discount}
+                  </Badge>
                 </div>
-                <Badge className="absolute top-4 right-4 bg-accent text-white">
-                  {item.discount}
-                </Badge>
-              </div>
-              <div className="p-5">
-                <div className="mb-3">
-                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                  <p className="text-sm text-gray-600">{item.description}</p>
+                <div className="p-5">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.description}</p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-primary font-bold">${item.price}</span>
+                    <span className="text-sm text-gray-500">by {item.partner}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-primary font-bold">${item.price}</span>
-                  <span className="text-sm text-gray-500">by {item.partner}</span>
-                </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))
+          )}
         </div>
       </div>
     </section>
