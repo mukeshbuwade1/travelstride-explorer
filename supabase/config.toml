@@ -1,1 +1,16 @@
+
 project_id = "gqluohyewtjcjbntjfym"
+[api]
+enabled = true
+[auth]
+enabled = true
+[realtime]
+enabled = true
+[storage]
+enabled = true
+[edge_functions]
+enabled = true
+[edge_functions.verify-payment]
+verify_jwt = true
+[edge_functions.create-razorpay-order]
+verify_jwt = true

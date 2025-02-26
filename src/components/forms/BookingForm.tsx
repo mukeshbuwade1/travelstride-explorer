@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +27,12 @@ interface BookingFormProps {
     duration: string;
     price: number;
   };
+}
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
 }
 
 export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFormProps) => {
@@ -70,6 +75,84 @@ export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFor
     setTravelers(travelers.filter(t => t.id !== id));
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = resolve;
+      document.body.appendChild(script);
+    });
+  };
+
+  const initializePayment = async (bookingId: number, amount: number) => {
+    try {
+      const { data: order, error } = await supabase.functions.invoke('create-razorpay-order', {
+        body: { bookingId, amount }
+      });
+
+      if (error) throw error;
+
+      await loadRazorpayScript();
+
+      const options = {
+        key: 'YOUR_RAZORPAY_KEY_ID',
+        amount: amount * 100,
+        currency: 'INR',
+        name: 'Your Travel Company',
+        description: `Booking for ${packageDetails.name}`,
+        order_id: order.id,
+        handler: async function(response: any) {
+          try {
+            const { error: verificationError } = await supabase.functions.invoke('verify-payment', {
+              body: {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              }
+            });
+
+            if (verificationError) throw verificationError;
+
+            toast({
+              title: "Payment Successful",
+              description: "Your booking has been confirmed.",
+            });
+
+            onOpenChange(false);
+          } catch (error) {
+            toast({
+              title: "Payment Verification Failed",
+              description: "Please contact support if amount was deducted.",
+              variant: "destructive"
+            });
+          }
+        },
+        prefill: {
+          email: contactDetails.email,
+          contact: `${contactDetails.countryCode}${contactDetails.phone}`
+        },
+        modal: {
+          ondismiss: function() {
+            toast({
+              title: "Payment Cancelled",
+              description: "You can complete the payment later from your bookings.",
+              variant: "destructive"
+            });
+          }
+        }
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to initialize payment. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!travelers.length) {
@@ -99,19 +182,15 @@ export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFor
           package_id: packageDetails.id,
           user_id: user?.id,
           total_amount: totalAmount,
-          status: 'pending'
+          status: 'pending',
+          payment_status: 'pending'
         }])
         .select()
         .single();
 
       if (error) throw error;
 
-      toast({
-        title: "Booking Initiated",
-        description: "Your booking has been created successfully. We'll contact you shortly.",
-      });
-      
-      onOpenChange(false);
+      await initializePayment(data.id, totalAmount);
     } catch (error) {
       toast({
         title: "Error",
