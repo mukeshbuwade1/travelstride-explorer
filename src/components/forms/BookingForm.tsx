@@ -102,18 +102,20 @@ export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFor
 
       await loadRazorpayScript();
 
-      const { data: secrets, error: secretsError } = await supabase
+      // Using a raw query to get around type issues until types are updated
+      const { data: configData, error: configError } = await supabase
         .from('razorpay_config')
         .select('key_id')
+        .limit(1)
         .single();
 
-      if (secretsError) {
-        console.error('Error fetching Razorpay key:', secretsError);
+      if (configError || !configData) {
+        console.error('Error fetching Razorpay key:', configError);
         throw new Error('Failed to load payment configuration');
       }
 
       const options = {
-        key: secrets.key_id,
+        key: configData.key_id,
         amount: amount * 100,
         currency: 'INR',
         name: 'Your Travel Company',

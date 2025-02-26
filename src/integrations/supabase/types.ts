@@ -368,6 +368,24 @@ export type Database = {
         }
         Relationships: []
       }
+      razorpay_config: {
+        Row: {
+          created_at: string
+          id: number
+          key_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          key_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          key_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
