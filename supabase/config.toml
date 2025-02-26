@@ -8,9 +8,9 @@ enabled = true
 enabled = true
 [storage]
 enabled = true
-[edge_functions]
+[functions]
 enabled = true
-[edge_functions.verify-payment]
+[functions.verify-payment]
 verify_jwt = true
-[edge_functions.create-razorpay-order]
+[functions.create-razorpay-order]
 verify_jwt = true
