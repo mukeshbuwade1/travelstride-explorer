@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,22 +87,41 @@ export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFor
 
   const initializePayment = async (bookingId: number, amount: number) => {
     try {
+      console.log('Initializing payment for booking:', bookingId, 'amount:', amount);
+      
       const { data: order, error } = await supabase.functions.invoke('create-razorpay-order', {
         body: { bookingId, amount }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error creating Razorpay order:', error);
+        throw error;
+      }
+
+      console.log('Razorpay order created:', order);
 
       await loadRazorpayScript();
 
+      const { data: secrets, error: secretsError } = await supabase
+        .from('razorpay_config')
+        .select('key_id')
+        .single();
+
+      if (secretsError) {
+        console.error('Error fetching Razorpay key:', secretsError);
+        throw new Error('Failed to load payment configuration');
+      }
+
       const options = {
-        key: 'YOUR_RAZORPAY_KEY_ID',
+        key: secrets.key_id,
         amount: amount * 100,
         currency: 'INR',
         name: 'Your Travel Company',
         description: `Booking for ${packageDetails.name}`,
         order_id: order.id,
         handler: async function(response: any) {
+          console.log('Payment successful, verifying...', response);
+          
           try {
             const { error: verificationError } = await supabase.functions.invoke('verify-payment', {
               body: {
@@ -120,6 +140,7 @@ export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFor
 
             onOpenChange(false);
           } catch (error) {
+            console.error('Payment verification failed:', error);
             toast({
               title: "Payment Verification Failed",
               description: "Please contact support if amount was deducted.",
@@ -142,9 +163,11 @@ export const BookingForm = ({ isOpen, onOpenChange, packageDetails }: BookingFor
         }
       };
 
+      console.log('Initializing Razorpay with options:', { ...options, key: '[REDACTED]' });
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
+      console.error('Payment initialization failed:', error);
       toast({
         title: "Error",
         description: "Failed to initialize payment. Please try again.",
