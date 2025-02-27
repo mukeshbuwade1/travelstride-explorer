@@ -1,10 +1,10 @@
-
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Filter, Search, DollarSign } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Package {
   id: number;
@@ -68,6 +68,7 @@ const Packages = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tag = searchParams.get("tag");
@@ -79,21 +80,18 @@ const Packages = () => {
   useEffect(() => {
     let filtered = [...packages];
 
-    // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(pkg => 
         pkg.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
-    // Apply tag filter
     if (selectedTags.length > 0) {
       filtered = filtered.filter(pkg => 
         selectedTags.some(tag => pkg.tags.includes(tag))
       );
     }
 
-    // Apply price filter
     if (minPrice) {
       filtered = filtered.filter(pkg => 
         parseInt(pkg.price) >= parseInt(minPrice)
@@ -116,11 +114,14 @@ const Packages = () => {
     );
   };
 
+  const handlePackageClick = (id: number) => {
+    navigate(`/package/${id}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row gap-6 mb-8">
-          {/* Filters Section */}
           <div className="w-full md:w-1/4 space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -128,7 +129,6 @@ const Packages = () => {
                 Filters
               </h3>
               
-              {/* Search */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <Search className="h-4 w-4" />
@@ -143,7 +143,6 @@ const Packages = () => {
                 />
               </div>
 
-              {/* Price Range */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
@@ -167,7 +166,6 @@ const Packages = () => {
                 </div>
               </div>
 
-              {/* Tags */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tags
@@ -188,13 +186,13 @@ const Packages = () => {
             </div>
           </div>
 
-          {/* Packages Grid */}
           <div className="w-full md:w-3/4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredPackages.map((pkg) => (
                 <Card
                   key={pkg.id}
-                  className="group overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                  className="group overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                  onClick={() => handlePackageClick(pkg.id)}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img
