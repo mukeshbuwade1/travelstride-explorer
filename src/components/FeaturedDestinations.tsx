@@ -1,153 +1,90 @@
 
-import { ChevronRight } from "lucide-react";
-import { Card } from "./ui/card";
-import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
-import { Skeleton } from "./ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
-interface Destination {
-  id: number;
-  title: string;
-  image: string;
-  price: number;
-  rating: number;
-  category: string;
-}
-
-const DestinationSection = ({ 
-  title, 
-  destinations,
-  viewAllLink,
-  tag,
-  isLoading
-}: { 
-  title: string;
-  destinations?: Destination[];
-  viewAllLink: string;
-  tag?: string;
-  isLoading: boolean;
-}) => {
+export const FeaturedDestinations = () => {
   const navigate = useNavigate();
+  
+  const { data: destinations, isLoading } = useQuery({
+    queryKey: ['featured-destinations'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('destinations')
+        .select('*')
+        .limit(6);
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  const handleCardClick = (destinationId: number) => {
+    navigate(`/destination/${destinationId}`);
+  };
 
   if (isLoading) {
     return (
-      <div className="mb-12">
-        <div className="flex justify-between items-center mb-6">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-10 w-24" />
-        </div>
-        <div className="relative">
-          <div className="flex overflow-x-auto gap-6 pb-4 -mx-4 px-4 scrollbar-hide">
-            {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="flex-shrink-0 w-[300px] overflow-hidden">
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <Skeleton className="h-8 w-64 mx-auto" />
+            <Skeleton className="h-4 w-96 mx-auto mt-4" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <Card key={i} className="overflow-hidden">
                 <Skeleton className="h-48 w-full" />
-                <div className="p-6">
-                  <Skeleton className="h-6 w-3/4 mb-2" />
-                  <div className="flex justify-between items-center">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-4 w-16" />
-                  </div>
-                </div>
+                <CardContent className="p-4">
+                  <Skeleton className="h-4 w-2/3 mb-2" />
+                  <Skeleton className="h-4 w-1/3" />
+                </CardContent>
               </Card>
             ))}
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="mb-12">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
-        <Button 
-          variant="ghost" 
-          className="text-primary" 
-          onClick={() => navigate(`/packages${tag ? `?tag=${tag}` : ''}`)}
-        >
-          View All <ChevronRight className="ml-1 h-4 w-4" />
-        </Button>
-      </div>
-      <div className="relative">
-        <div className="flex overflow-x-auto gap-6 pb-4 -mx-4 px-4 scrollbar-hide">
+    <section className="py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">Popular Destinations</h2>
+          <p className="mt-4 text-xl text-gray-600">
+            Discover our most sought-after travel destinations
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {destinations?.map((destination) => (
-            <Card
-              key={destination.id}
-              className="group flex-shrink-0 w-[300px] overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-              onClick={() => navigate(`/destination/${destination.id}`)}
+            <Card 
+              key={destination.id} 
+              className="overflow-hidden cursor-pointer transition-transform hover:scale-105"
+              onClick={() => handleCardClick(destination.id)}
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="aspect-video relative">
                 <img
                   src={destination.image}
                   alt={destination.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{destination.title}</h3>
-                <div className="flex justify-between items-center">
-                  <span className="text-primary text-lg font-bold">${destination.price}</span>
+              <CardContent className="p-4">
+                <h3 className="text-lg font-semibold mb-1">{destination.title}</h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-primary">From ₹{destination.price.toLocaleString('en-IN')}</span>
                   <div className="flex items-center">
                     <span className="text-yellow-400">★</span>
-                    <span className="ml-1 text-gray-600">{destination.rating}</span>
+                    <span className="ml-1 text-sm text-gray-600">{destination.rating}</span>
                   </div>
                 </div>
-              </div>
+              </CardContent>
             </Card>
           ))}
         </div>
-      </div>
-    </div>
-  );
-};
-
-export const FeaturedDestinations = () => {
-  const { data: destinations, isLoading } = useQuery({
-    queryKey: ['destinations'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('destinations')
-        .select('*');
-      
-      if (error) throw error;
-      return data as Destination[];
-    }
-  });
-
-  const getDestinationsByCategory = (category: string) => {
-    return destinations?.filter(d => d.category === category) ?? [];
-  };
-
-  return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Destinations</h2>
-          <p className="text-lg text-gray-600">Explore our handpicked destinations</p>
-        </div>
-
-        <DestinationSection
-          title="Best Sellers"
-          destinations={getDestinationsByCategory('best-seller')}
-          viewAllLink="/packages"
-          tag="best-seller"
-          isLoading={isLoading}
-        />
-        <DestinationSection
-          title="Recommended For You"
-          destinations={getDestinationsByCategory('recommended')}
-          viewAllLink="/packages"
-          isLoading={isLoading}
-        />
-        <DestinationSection
-          title="Visa-Free Destinations"
-          destinations={getDestinationsByCategory('visa-free')}
-          viewAllLink="/packages"
-          tag="visa-free"
-          isLoading={isLoading}
-        />
       </div>
     </section>
   );

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Menu, X, UserRound } from "lucide-react";
 import { Button } from "./ui/button";
@@ -17,7 +16,13 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-2xl font-bold text-primary">TravelEase</Link>
+            <Link to="/" className="text-2xl font-bold text-primary">
+              <img 
+                src="/lovable-uploads/026c121f-618c-45ca-b739-9aa7f9d98116.png" 
+                alt="MapMyTour Logo" 
+                className="h-8"
+              />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
