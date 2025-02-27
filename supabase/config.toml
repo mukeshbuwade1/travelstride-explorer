@@ -9,7 +9,8 @@ enabled = true
 [storage]
 enabled = true
 [functions]
-enabled = true
+[functions.send-contact-email]
+verify_jwt = false
 [functions.verify-payment]
 verify_jwt = true
 [functions.create-razorpay-order]
