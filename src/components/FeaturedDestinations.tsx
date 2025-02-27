@@ -13,8 +13,7 @@ export const FeaturedDestinations = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('destinations')
-        .select('*')
-        .limit(6);
+        .select('*');
       
       if (error) throw error;
       return data;
